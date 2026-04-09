@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon Holiday | Ultra-Premium Indian Expeditions</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #c9a050; 
+            --bg: #ffffff;
+            --text: #0f172a;
+            --nav-bg: rgba(255, 255, 255, 0.98);
+            --card-bg: #ffffff;
+            --overlay: rgba(0,0,0,0.4);
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #020617;
+            --text: #f8fafc;
+            --nav-bg: rgba(2, 6, 23, 0.98);
+            --card-bg: #0f172a;
+            --overlay: rgba(0,0,0,0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            overflow-x: hidden; 
+            transition: background 0.5s ease;
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 900; }
+
+        /* --- LUXURY NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 25px 5%; position: fixed; width: 100%; z-index: 5000;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            padding: 15px 5%; background: var(--nav-bg);
+            backdrop-filter: blur(15px); border-bottom: 1px solid var(--primary);
+        }
+
+        .logo { font-size: 1.8rem; letter-spacing: -1px; color: var(--text); cursor: pointer; }
+        .logo span { color: var(--primary); font-style: italic; font-weight: 400; }
+
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: var(--primary); transition: 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+
+        .menu-controls { display: flex; align-items: center; gap: 20px; }
+        #menu-btn { font-size: 1.5rem; cursor: pointer; display: none; color: var(--text); }
+        .theme-toggle { font-size: 1.2rem; cursor: pointer; color: var(--primary); transition: 0.3s; }
+        .theme-toggle:hover { transform: rotate(45deg); }
+
+        /* --- THE HERO (CINEMATIC) --- */
+        .hero {
+            height: 100vh; width: 100%;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.2), var(--overlay)), 
+                        url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2000');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: white; padding: 0 5%;
+        }
+
+        .hero-content h1 { font-size: clamp(3rem, 12vw, 8rem); line-height: 1; margin-bottom: 20px; text-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .hero-content p { letter-spacing: 12px; text-transform: uppercase; font-weight: 300; font-size: clamp(0.7rem, 2vw, 1.1rem); opacity: 0.9; }
+
+        /* --- THE GRID OF WONDERS --- */
+        .section-title { text-align: center; margin-bottom: 70px; padding: 0 5%; }
+        .section-title h2 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 10px; }
+        .divider { width: 80px; height: 3px; background: var(--primary); margin: 20px auto; }
+
+        .section-padding { padding: 120px 5%; }
+        
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); 
+            gap: 40px; 
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 4px; 
+            overflow: hidden; 
+            transition: var(--transition); 
+            border: 1px solid rgba(201, 160, 80, 0.15); 
+            position: relative;
+        }
+
+        .card:hover { transform: translateY(-15px); border-color: var(--primary); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        
+        .card-img-container { height: 500px; overflow: hidden; position: relative; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s ease; }
+        .card:hover .card-img { transform: scale(1.1); }
+
+        .card-badge { position: absolute; top: 20px; right: 20px; background: var(--primary); color: white; padding: 5px 15px; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; }
+
+        .card-body { padding: 30px; text-align: center; }
+        .card-body h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .card-price { color: var(--primary); font-family: 'Montserrat'; font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; }
+
+        /* --- REGISTRATION (FORM) --- */
+        .contact-section { background: rgba(201, 160, 80, 0.04); }
+        .contact-box { max-width: 900px; margin: 0 auto; padding: 60px 40px; background: var(--card-bg); border-top: 5px solid var(--primary); box-shadow: 0 50px 100px rgba(0,0,0,0.05); }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .form-input { width: 100%; padding: 18px; background: transparent; border: none; border-bottom: 1px solid rgba(0,0,0,0.1); color: var(--text); font-family: inherit; font-size: 1rem; transition: 0.3s; }
+        [data-theme="dark"] .form-input { border-bottom-color: rgba(255,255,255,0.1); }
+        .form-input:focus { outline: none; border-bottom-color: var(--primary); }
+        
+        .full-width { grid-column: span 2; }
+        
+        .btn-royal { 
+            width: 100%; padding: 22px; background: var(--primary); color: white; border: none; 
+            font-weight: 900; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; 
+            transition: 0.4s; margin-top: 20px;
+        }
+        .btn-royal:hover { background: #0f172a; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        /* --- PORTALS (MODALS) --- */
+        .portal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 6000; display: none; overflow-y: auto;
+            padding: 100px 5% 50px; animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: scale(1); } }
+        .close-portal { position: fixed; top: 30px; right: 5%; font-size: 3rem; cursor: pointer; color: var(--primary); z-index: 7000; }
+
+        /* --- MOBILE UI --- */
+        @media (max-width: 992px) {
+            .nav-links { display: none; }
+            #menu-btn { display: block; }
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .hero { background-attachment: scroll; }
+            .card-img-container { height: 350px; }
+        }
+
+        .mobile-nav { 
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
+            background: var(--nav-bg); z-index: 5050; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; transition: 0.5s ease;
+        }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav a { font-size: 2rem; font-family: 'Playfair Display'; margin: 20px 0; text-decoration: none; color: var(--text); }
+
+        /* --- FOOTER --- */
+        footer { padding: 100px 5% 50px; background: #020617; color: white; text-align: center; }
+        .footer-logo { font-size: 2.5rem; margin-bottom: 20px; }
+        .footer-logo span { color: var(--primary); }
+        .social-links { margin: 30px 0; display: flex; justify-content: center; gap: 30px; font-size: 1.5rem; }
+        .social-links a { color: white; transition: 0.3s; }
+        .social-links a:hover { color: var(--primary); transform: translateY(-5px); }
+    </style>
+</head>
+<body data-theme="light">
+
+    <nav id="navbar">
+        <div class="logo" onclick="window.scrollTo(0,0)">Horizon <span>Holiday</span></div>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="javascript:void(0)" onclick="openPortal('temple-portal')">Temple Tours</a></li>
+            <li><a href="javascript:void(0)" onclick="openPortal('service-portal')">Services</a></li>
+            <li><a href="#tours">Expeditions</a></li>
+            <li><a href="#contact">Inquiry</a></li>
+        </ul>
+        <div class="menu-controls">
+            <div class="theme-toggle" id="theme-btn"><i class="fas fa-adjust"></i></div>
+            <div id="menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="#hero" onclick="closeMenu()">Home</a>
+        <a href="javascript:void(0)" onclick="openPortal('temple-portal'); closeMenu()">Temple Tours</a>
+        <a href="javascript:void(0)" onclick="openPortal('service-portal'); closeMenu()">Services</a>
+        <a href="#tours" onclick="closeMenu()">Expeditions</a>
+        <a href="#contact" onclick="closeMenu()">Inquiry</a>
+    </div>
+
+    <section class="hero" id="hero">
+        <div class="hero-content" data-aos="zoom-out" data-aos-duration="2000">
+            <p>Est. 2012 • The Gold Standard</p>
+            <h1>India Awaits</h1>
+            <div class="divider" style="background: white;"></div>
+            <button class="btn-royal" style="width: auto; padding: 18px 50px;" onclick="document.getElementById('tours').scrollIntoView()">Explore The Collection</button>
+        </div>
+    </section>
+
+    <section class="section-padding" id="tours">
+        <div class="section-title" data-aos="fade-up">
+            <p style="letter-spacing: 5px; color: var(--primary); font-weight: 700;">PRIVATE PORTFOLIO</p>
+            <h2>Elite Expeditions</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="grid" id="main-grid">
+            </div>
+    </section>
+
+    <section class="section-padding contact-section" id="contact">
+        <div class="contact-box" data-aos="fade-up">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 10px;">Begin Your Journey</h2>
+            <p style="text-align: center; margin-bottom: 40px; opacity: 0.6;">Leave your details below for a private consultation.</p>
+            
+            <form action="https://formspree.io/f/mkopkvkp" method="POST">
+                <div class="form-grid">
+                    <input type="text" name="name" class="form-input" placeholder="Full Name" required>
+                    <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+                    <input type="tel" name="phone" class="form-input" placeholder="Mobile: 1234567890" required>
+                    <input type="text" name="subject" class="form-input" placeholder="Preferred Destination">
+                    <textarea name="message" class="form-input full-width" rows="4" placeholder="Your Vision..."></textarea>
+                </div>
+                <button type="submit" class="btn-royal">REQUEST PRIVATE ACCESS</button>
+            </form>
+        </div>
+    </section>
+
+    <div id="temple-portal" class="portal">
+        <div class="close-portal" onclick="closePortal('temple-portal')">&times;</div>
+        <div class="section-title">
+            <p style="letter-spacing: 5px; color: var(--primary);">THE SACRED PATH</p>
+            <h1 style="font-size: 4rem;">Sacred Sanctuaries</h1>
+            <div class="divider"></div>
+        </div>
+        <div class="grid" id="temple-grid"></div>
+    </div>
+
+    <div id="service-portal" class="portal">
+        <div class="close-portal" onclick="closePortal('service-portal')">&times;</div>
+        <div class="section-title">
+            <h1 style="font-size: 4rem;">Our Philosophy</h1>
+            <div class="divider"></div>
+        </div>
+        <div style="max-width: 800px; margin: 0 auto; line-height: 2.2; font-size: 1.1rem; font-weight: 300; text-align: justify;">
+            <p><strong>01. Absolute Logistics:</strong> We manage every second of your journey. From private jet charters to high-clearance armored SUVs, your movement through India is silent and seamless.</p>
+            <p><strong>02. VVIP Access:</strong> We provide entry to spaces usually closed to the public—private palace chambers, temple inner sanctums, and museum archives.</p>
+            <p><strong>03. The Horizon Butler:</strong> A professional concierge travels with you, managing everything from your preferred pillow type to your daily culinary requirements.</p>
+            <p><strong>04. Security Liaison:</strong> Discreet, high-level protection detail is available for our high-profile clients upon request.</p>
+            <p style="margin-top: 50px; text-align: center; color: var(--primary); font-weight: 700;">Direct Liaison: +91 1234567890</p>
+        </div>
+    </div>
+
+    <footer>
+        <h2 class="footer-logo">Horizon <span>Holiday</span></h2>
+        <p style="letter-spacing: 3px; opacity: 0.6; font-size: 0.8rem;">CULTIVATING THE SUBLIME SINCE 2012</p>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+
+        <div style="margin: 40px 0; font-weight: 300;">
+            <p><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 10px;"></i> +91 1234567890</p>
+            <p style="margin-top: 10px;"><i class="fas fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> concierge@horizon.in</p>
+            <p style="margin-top: 10px;"><i class="fab fa-instagram" style="color: var(--primary); margin-right: 10px;"></i> @web.devlp.n</p>
+        </div>
+
+        <p style="opacity: 0.3; font-size: 0.7rem;">&copy; 2026 Horizon Holiday & Adventure Pvt Ltd. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // Scroll Logic
+        window.onscroll = () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 80) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        };
+
+        // Theme Toggle
+        document.getElementById('theme-btn').onclick = () => {
+            const current = document.body.getAttribute('data-theme');
+            document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        };
+
+        // Portal Controls
+        function openPortal(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
+        function closePortal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+        // Mobile Nav
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        menuBtn.onclick = () => mobileNav.classList.toggle('open');
+        function closeMenu() { mobileNav.classList.remove('open'); }
+
+        // EXPANSIVE LOCATION DATA (30 TOTAL)
+        const expeditions = [
+            { name: "Kashmir Mist", price: "₹45,000", img: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=800" },
+            { name: "Ladakh Silence", price: "₹52,000", img: "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?q=80&w=800" },
+            { name: "Jaipur Royalty", price: "₹38,000", img: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=800" },
+            { name: "Kerala Backwaters", price: "₹42,000", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=800" },
+            { name: "Udaipur Lakes", price: "₹48,000", img: "https://images.unsplash.com/photo-1590050752117-23a9d7fc97da?q=80&w=800" },
+            { name: "Andaman Blue", price: "₹55,000", img: "https://images.unsplash.com/photo-1589135410994-58a6a9d5248a?q=80&w=800" },
+            { name: "Sikkim Peaks", price: "₹40,000", img: "https://images.unsplash.com/photo-1589793413308-4445c7b74454?q=80&w=800" },
+            { name: "Goa Shores", price: "₹30,000", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800" },
+            { name: "Jaisalmer Sands", price: "₹32,000", img: "https://images.unsplash.com/photo-1603262110263-fb0110e71329?q=80&w=800" },
+            { name: "Munnar Tea", price: "₹25,000", img: "https://images.unsplash.com/photo-1516715094483-75da7dee9758?q=80&w=800" },
+            { name: "Rishikesh Aura", price: "₹18,000", img: "https://images.unsplash.com/photo-1545105511-921020168494?q=80&w=800" },
+            { name: "Manali Snow", price: "₹28,000", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800" },
+            { name: "Coorg Greens", price: "₹22,000", img: "https://images.unsplash.com/photo-1590402444587-432824234a22?q=80&w=800" },
+            { name: "Hampi Ruins", price: "₹26,000", img: "https://images.unsplash.com/photo-1600100397561-39ca14fad3f3?q=80&w=800" },
+            { name: "Shillong Mist", price: "₹35,000", img: "https://images.unsplash.com/photo-1598894951333-6901867f167e?q=80&w=800" }
+        ];
+
+        const sanctuaries = [
+            { name: "Kedarnath", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600" },
+            { name: "Golden Temple", img: "https://images.unsplash.com/photo-1583032015879-e5022cb87c3b?q=80&w=600" },
+            { name: "Varanasi Kashi", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?q=80&w=600" },
+            { name: "Tirupati Balaji", img: "https://images.unsplash.com/photo-1580191947416-62d35a55e71d?q=80&w=600" },
+            { name: "Meenakshi Amman", img: "https://images.unsplash.com/photo-1621332809628-91f97300f89d?q=80&w=600" },
+            { name: "Somnath", img: "https://images.unsplash.com/photo-1635345719323-96b42b93409a?q=80&w=600" },
+            { name: "Jagannath Puri", img: "https://images.unsplash.com/photo-1612439291003-886866ba4235?q=80&w=600" },
+            { name: "Konark Sun", img: "https://images.unsplash.com/photo-1624508493068-07b140030f9a?q=80&w=600" },
+            { name: "Akshardham", img: "https://images.unsplash.com/photo-1542704792-e30dac463c90?q=80&w=600" },
+            { name: "Badrinath", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600" },
+            { name: "Vaishno Devi", img: "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?q=80&w=600" },
+            { name: "Rameshwaram", img: "https://images.unsplash.com/photo-1605335198305-64585642a868?q=80&w=600" },
+            { name: "Brihadeeswarar", img: "https://images.unsplash.com/photo-1588663471018-09121a81232c?q=80&w=600" },
+            { name: "Dwarka", img: "https://images.unsplash.com/photo-1621332809628-91f97300f89d?q=80&w=600" },
+            { name: "Haridwar Ghat", img: "https://images.unsplash.com/photo-1545105511-921020168494?q=80&w=600" }
+        ];
+
+        function populate(data, gridId, hasPrice) {
+            const grid = document.getElementById(gridId);
+            data.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card" data-aos="fade-up">
+                        <div class="card-img-container">
+                       ${hasPrice ? `<span class="card-badge">PREMIUM</span>` : ''}
+                            <img src="${item.img}" class="card-img" loading="lazy">
+                        </div>
+                        <div class="card-body">
+                            <h3>${item.name}</h3>
+                            ${hasPrice ? `<p class="card-price">${item.price}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        populate(expeditions, 'main-grid', true);
+        populate(sanctuaries, 'temple-grid', false);
+    </script>
+</body>
+</html>
